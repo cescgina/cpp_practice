@@ -398,7 +398,7 @@ int main(int argc, char** argv){
         }
         std::cout << "Update of the bunnies at the end of turn " << i << "! Total population " << bunnies.size() << ", number of vampires " << vampires << std::endl;
         for (std::list<Bunny>::iterator it=bunnies.begin(); it != bunnies.end(); it++){
-            if (!it->rmvb) it->print_bunny();
+            it->print_bunny();
         }
         print_grid(grid_ref);
         if (i >= turns || bunnies.empty()) break;
