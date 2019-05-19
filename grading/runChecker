@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for (( i = 0; i <=100; i+=9 ))
+do
+  echo ./grading $i
+  ./grading $i
+  echo " "
+done
