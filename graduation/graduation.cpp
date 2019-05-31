@@ -34,7 +34,6 @@ class Bunny{
             x = x_coor;
             y = y_coor;
         }
-        void print_bunny();
         void die();
         bool check_death();
         bool check_breed();
@@ -42,12 +41,7 @@ class Bunny{
         std::string gridCharacter();
 
 };
-void Bunny::print_bunny(){ 
-    std::cout << "======================================= " << std::endl;
-    std::cout << "Printing info for bunny named " << name << std::endl;
-    std::cout << "Age is " << age << ", color is " << color  << ", sex is " << sex << " and is located at position " << x << "," << y << std::endl;
-    if (rmvb) std::cout << "Is a radioactive mutant vampire bunny!!" << std::endl;
-}
+
 void Bunny::die(){
     if (rmvb) std::cout << "Radioactive mutant vampire ";
     std::cout << "Bunny " << name << " died!" << std::endl;
@@ -66,6 +60,14 @@ bool Bunny::check_breed(){
 void Bunny::turn_vampire(){
     std::cout << "Bunny " << name << " at position " << x << "," << y << " turned into a radioactive mutant vampire bunny" << std::endl;
     rmvb = true;
+}
+
+std::ostream & operator<<(std::ostream& os, const Bunny& bun){
+    os << "======================================= " << std::endl;
+    os << "Printing info for bunny named " << bun.name << std::endl;
+    os << "Age is " << bun.age << ", color is " << bun.color  << ", sex is " << bun.sex << " and is located at position " << bun.x << "," << bun.y << std::endl;
+    if (bun.rmvb) os << "Is a radioactive mutant vampire bunny!!" << std::endl;
+    return os;
 }
 
 std::string Bunny::gridCharacter(){
@@ -324,7 +326,7 @@ int main(int argc, char** argv){
         grid[x_coord][y_coord] = &bunnies.front();
     }
     for (std::list<Bunny>::iterator it=bunnies.begin(); it != bunnies.end(); it++){
-        it->print_bunny();
+        std::cout << *it << std::endl;
         if (it->rmvb) vampires++;
     }
     while (true){
@@ -398,7 +400,7 @@ int main(int argc, char** argv){
         }
         std::cout << "Update of the bunnies at the end of turn " << i << "! Total population " << bunnies.size() << ", number of vampires " << vampires << std::endl;
         for (std::list<Bunny>::iterator it=bunnies.begin(); it != bunnies.end(); it++){
-            it->print_bunny();
+            std::cout << *it << std::endl;
         }
         print_grid(grid_ref);
         if (i >= turns || bunnies.empty()) break;
