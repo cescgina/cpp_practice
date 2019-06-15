@@ -22,6 +22,13 @@ void testIsPrefix(){
     std::cout << "Should be true " << isPrefix(v1, v3) << std::endl;
 }
 
+template <typename T>
+void print_vector(std::vector<T> const & v){
+    for (const auto el: v){
+        std::cout << el << " ";
+    }
+    std::cout << std::endl;
+}
 
 int main(){
     testIsPrefix();
