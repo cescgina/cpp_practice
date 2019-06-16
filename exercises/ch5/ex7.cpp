@@ -3,7 +3,7 @@
 #include <algorithm>
 
 template <typename T>
-void print_vector(std::vector<T> const & v){
+void print_vector(const std::vector<T>& v){
     for (const auto el: v){
         std::cout << el << " ";
     }
