@@ -1,4 +1,6 @@
 #include <iostream>
+// compile with  g++ -g -Wall -Werror -Wpadded ex1.cpp -o ans to get warning
+// of padding
 
 int main(){
     //struct A {long double ld; double dou; long lo; int in; bool bo; char ch;};
