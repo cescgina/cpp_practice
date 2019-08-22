@@ -14,20 +14,25 @@ void matmul(mat& A, mat& B, mat& C){
     for (int i=0; i<n; i++){
         for (int j=0; j<n; j++){
             for (int k=0; k<n; k++){
-                C[i][j] += A[i][k]*B[k][j];
+                C[i][j] += A[i][k]*B[j][k];
             }
         }
     }
 
 }
 
-void read_file(std::ifstream& infile, mat& vec, int n){
+void read_file(std::ifstream& infile, mat& vec, int n, bool trans){
     std::string line;
     for (int i=0; i<n; i++){
         getline(infile, line);
         std::istringstream iss(line);
         for (int j=0; j<n; j++){
-            iss >> vec[i][j];
+            if (trans) {
+                iss >> vec[j][i];
+            }
+            else{
+                iss >> vec[i][j];
+            }
         }
     }
 }
@@ -52,8 +57,8 @@ int main(){
         std::ifstream a_file(a_f);
         std::string b_f("B_"+std::to_string(n)+".dat");
         std::ifstream b_file(b_f);
-        read_file(a_file, A, n);
-        read_file(b_file, B, n);
+        read_file(a_file, A, n, false);
+        read_file(b_file, B, n, true);
         a_file.close();
         b_file.close();
         auto start = std::chrono::steady_clock::now();
