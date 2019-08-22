@@ -1,0 +1,6 @@
+Processing matrices of size 10x10
+Took 3950 us to process, or 0.00395 s
+Processing matrices of size 100x100
+Took 461 us to process, or 0.000461 s
+Processing matrices of size 1000x1000
+Took 1375857 us to process, or 1.37586 s
