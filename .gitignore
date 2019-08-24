@@ -6,3 +6,6 @@
 */.fuse_hidden*
 */*/.ropeproject
 graduation/logfile.txt
+project-based-learning/photomosaic/images
+project-based-learning/photomosaic/image_processing/*.o
+project-based-learning/photomosaic/*.o
