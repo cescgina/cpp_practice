@@ -3,7 +3,7 @@
 #include <string>
 #include <utility>
 #include <experimental/filesystem>
-#include <utilities.h>
+#include "utilities.h"
 
 std::pair<int, int> calculate_resolutions(int original_res, int rows, int cols){
     int res_x = original_res, res_y = original_res;
@@ -43,13 +43,13 @@ files_array match_sources_files(pixels_array& pixels, sources_map& source_colors
             float local_dist = 0.0, local_r, local_g, local_b;
             std::string similar_file = "";
             for (sources_map::iterator el=source_colors.begin(); el!=source_colors.end(); el++){
-                local_r = r-el.second[0];
-                local_g = g-el.second[1];
-                local_b = b-el.second[2];
+                local_r = r-el->second[0];
+                local_g = g-el->second[1];
+                local_b = b-el->second[2];
                 local_dist = std::sqrt(local_r*local_r+local_g*local_g+local_b*local_b);
                 if (local_dist < dist){
                     dist = local_dist;
-                    similar_file = el.first;
+                    similar_file = el->first;
                 }
             }
             image_to_file[i][j] = similar_file;

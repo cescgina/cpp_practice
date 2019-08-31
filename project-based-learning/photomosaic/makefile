@@ -8,10 +8,14 @@ test_image:
 	image_processing/test_image
 
 main:
-	$(CC) $(CFLAGS) -o photomosaic.o photomosaic.cpp image_processing/image_processing.cpp utilities/utilities.cpp
+	$(CC) $(CFLAGS) -o photomosaic.o photomosaic.cpp image_processing/image_processing.cpp utilities/utilities.cpp $(LDLIBS)
 
 crop:
 	$(CC) $(CFLAGS) -o crop_photos.o crop_photos.cpp image_processing/image_processing.cpp utilities/utilities.cpp $(LDLIBS)
 
 clean:
 	rm image_processing/test_image.o
+
+run: main
+	# ./photomosaic.o images/input.jpg 50 images/kaggle-one-shot-pokemon/pokemon-tcg-images_cropped/ output_mosaic.jpg
+	./photomosaic.o images/input.jpg 10 images/test_pokemon-tcg-images_cropped/ output_mosaic.jpg

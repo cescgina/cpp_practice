@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <Magick++.h>
+#include "utilities.h"
 #include "image_processing.h"
 
 pixels_array preprocess_image(Magick::Image & image, size_t res_x, size_t res_y) {
@@ -49,13 +50,24 @@ void crop_photo(Magick::Image& image, std::string& output_folder, std::string& i
 }
 
 
-void construct_image_from_files(Magick:Image& image, files_array& files, size_t res_x, size_t res_y){
-    size_t rows = pixels.size(), cols = pixels[0].size();
+void construct_image_from_files(Magick::Image& image, files_array& files, size_t res_x, size_t res_y){
+    size_t rows = files.size(), cols = files[0].size();
     for (size_t i=0; i < rows; i++){
         for (size_t j=0; j < cols; j++){
             Magick::Image src_img(files[i][j]);
             src_img.resize(Magick::Geometry(res_y, res_x));
-            
+            //image.type(Magick::TrueColorType);
+            //src_img.type(Magick::TrueColorType);
+            src_img.modifyImage();
+            image.modifyImage();
+            Magick::PixelPacket *pixel_cache = image.getPixels(j*res_y, i*res_x, res_y, res_x);
+            Magick::PixelPacket *src_pixel_cache = src_img.getPixels(0, 0, res_y, res_x);
+            for (size_t k=0; k < res_y; k++){
+                for (size_t l=0; l < res_x; l++){
+                    pixel_cache[l+k*res_x] = src_pixel_cache[l+k*res_x];
+                }
+            }
+            image.syncPixels(); 
         }
     }
 }
