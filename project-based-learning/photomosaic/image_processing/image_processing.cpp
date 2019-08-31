@@ -1,19 +1,8 @@
 #include <vector>
-#include <utility>
 #include <iostream>
+#include <algorithm>
 #include <Magick++.h>
 #include "image_processing.h"
-
-std::pair<int, int> calculate_resolutions(int original_res, int rows, int cols){
-    int res_x = original_res, res_y = original_res;
-    while (rows % res_y != 0){
-        res_y--;
-    }
-    while (cols % res_x != 0){
-        res_x--;
-    }
-    return std::pair<int, int>(res_x, res_y);
-}
 
 pixels_array preprocess_image(Magick::Image & image, size_t res_x, size_t res_y) {
     size_t width = image.columns(), height = image.rows();
@@ -50,4 +39,23 @@ void paint_image(pixels_array& pixels, Magick::Image& img, size_t res_x, size_t 
         }
     }
     img.syncPixels();
+}
+
+void crop_photo(Magick::Image& image, std::string& output_folder, std::string& image_name){
+    size_t width = image.columns(), height = image.rows(), final_size;
+    final_size = std::min(height, width);
+    image.crop(Magick::Geometry(final_size, final_size));
+    image.write(output_folder+"/"+image_name);
+}
+
+
+void construct_image_from_files(Magick:Image& image, files_array& files, size_t res_x, size_t res_y){
+    size_t rows = pixels.size(), cols = pixels[0].size();
+    for (size_t i=0; i < rows; i++){
+        for (size_t j=0; j < cols; j++){
+            Magick::Image src_img(files[i][j]);
+            src_img.resize(Magick::Geometry(res_y, res_x));
+            
+        }
+    }
 }
