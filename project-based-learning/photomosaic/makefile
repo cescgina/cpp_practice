@@ -17,5 +17,5 @@ clean:
 	rm image_processing/test_image.o
 
 run: main
-	# ./photomosaic.o images/input.jpg 50 images/kaggle-one-shot-pokemon/pokemon-tcg-images_cropped/ output_mosaic.jpg
-	./photomosaic.o images/input.jpg 10 images/test_pokemon-tcg-images_cropped/ output_mosaic.jpg
+	# ./photomosaic.o images/input.jpg 10 images/test_pokemon-tcg-images_cropped/ output_mosaic_small_test.jpg
+	./photomosaic.o images/input.jpg 50 images/kaggle-one-shot-pokemon/pokemon-tcg-images_cropped/ images/output_mosaic_kaggle_pokemon-tcg-images.jpg
