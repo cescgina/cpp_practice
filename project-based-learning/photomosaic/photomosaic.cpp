@@ -42,14 +42,15 @@ int main(int argc, char** argv){
     start = std::chrono::steady_clock::now();
     std::list<std::string> photos = get_list_photos(source_path);
     sources_map source_colors;
-    std::vector<float> averages(3, 0), rounded_averages(3, 0);
+    std::vector<float> rounded_averages(3, 0);
     for (std::list<std::string>::iterator i=photos.begin(); i!=photos.end(); i++){
         Magick::Image source_img;
         try{
             source_img.read(*i);
             size_t width_src = source_img.columns(), heigth_src = source_img.rows();
-            averages = preprocess_image(source_img, heigth_src, width_src)[0][0];
-            rounded_averages = round_averages(averages);
+            std::vector<float> averages = preprocess_image(source_img, heigth_src, width_src)[0][0];
+            std::vector<float> avg_img = average_quarters(averages);
+            rounded_averages = round_averages(avg_img);
             int key = encode_averages(rounded_averages);
             if (source_colors.find(key) == source_colors.end()){
                 source_colors[key] = {std::make_pair(*i, averages)};

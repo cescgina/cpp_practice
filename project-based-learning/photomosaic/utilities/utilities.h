@@ -20,3 +20,5 @@ std::vector<float> round_averages(std::vector<float> averages);
 vector_sources find_similar_bucket(sources_map& source_colors, int key);
 int encode_averages(std::vector<float>& rounded_average);
 std::vector<float> decode_averages(int code);
+std::vector<float> average_quarters(std::vector<float>& averages);
+float calculate_distance(std::vector<float>& arr1, std::vector<float>& arr2);

@@ -39,10 +39,11 @@ files_array match_sources_files(pixels_array& pixels, sources_map& source_colors
     size_t rows = pixels.size(), cols = pixels[0].size();
     files_array image_to_file(rows, std::vector<std::string>(cols));
     vector_sources similiar_bucket;
+    std::vector<float> averages(3, 0), rounded_averages(3, 0);
     for (size_t i=0; i < rows; i++){
         for (size_t j=0; j < cols; j++){
-            float r=pixels[i][j][0], g=pixels[i][j][1], b=pixels[i][j][2];
-            std::vector<float> rounded_averages = round_averages(pixels[i][j]);
+            averages = average_quarters(pixels[i][j]);
+            rounded_averages = round_averages(averages);
             int key = encode_averages(rounded_averages);
             if (source_colors.find(key) == source_colors.end()){
                 similiar_bucket = find_similar_bucket(source_colors, key);
@@ -51,13 +52,10 @@ files_array match_sources_files(pixels_array& pixels, sources_map& source_colors
                 similiar_bucket = source_colors[key];
             }
             float dist = 10000.0;
-            float local_dist = 0.0, local_r, local_g, local_b;
+            float local_dist = 0.0;
             std::string similar_file = "";
             for (vector_sources::iterator el=similiar_bucket.begin(); el != similiar_bucket.end(); el++){
-                local_r = r-el->second[0];
-                local_g = g-el->second[1];
-                local_b = b-el->second[2];
-                local_dist = std::sqrt(local_r*local_r+local_g*local_g+local_b*local_b);
+                local_dist = calculate_distance(pixels[i][j], el->second);
                 if (local_dist < dist){
                     dist = local_dist;
                     similar_file = el->first;
@@ -117,4 +115,26 @@ std::vector<float> decode_averages(int code){
     float d3 = (float)(div_result.rem/10.0);
     std::vector<float> decoded = {d1, d2, d3};
     return decoded;
+}
+
+std::vector<float> average_quarters(std::vector<float>& averages){
+    std::vector<float> final_average(3, 0);
+    for (int k=0; k<3; k++){
+        for (int l=0; l<3; l++){
+            final_average[k] += averages[k+3*l];
+        }  
+    }
+    for (int k=0; k<3; k++){
+        final_average[k] /= 4;
+    }
+    return final_average;
+}
+
+float calculate_distance(std::vector<float>& arr1, std::vector<float>& arr2){
+    float dist = 0.0, diff;
+    for (size_t i=0; i<arr1.size(); i++){
+        diff = arr1[1]-arr2[i];
+        dist += diff*diff;
+    }
+    return std::sqrt(dist);
 }
