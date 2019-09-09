@@ -1,6 +1,6 @@
 CC=g++
 #CFLAGS=-Wall -g -I/usr/include/ImageMagick-6 -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 -lMagickCore-6.Q16
-CFLAGS=-Wall -g `Magick++-config --cppflags --cxxflags --ldflags --libs` -I image_processing -I utilities
+CFLAGS=-Wall -O2 -Wpedantic -Wextra `Magick++-config --cppflags --cxxflags --ldflags --libs` -I image_processing -I utilities
 LDLIBS=-lstdc++fs
 
 test_image:
