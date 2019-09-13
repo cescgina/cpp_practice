@@ -1,6 +1,7 @@
 CC=g++
 #CFLAGS=-Wall -g -I/usr/include/ImageMagick-6 -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 -lMagickCore-6.Q16
 CFLAGS=-Wall -O2 -Wpedantic -Wextra `Magick++-config --cppflags --cxxflags --ldflags --libs` -I image_processing -I utilities
+debug_CFLAGS=-Wall -g -Wpedantic -Wextra `Magick++-config --cppflags --cxxflags --ldflags --libs` -I image_processing -I utilities
 LDLIBS=-lstdc++fs
 
 test_image:
@@ -9,6 +10,9 @@ test_image:
 
 main:
 	$(CC) $(CFLAGS) -o photomosaic.o photomosaic.cpp image_processing/image_processing.cpp utilities/utilities.cpp $(LDLIBS)
+
+debug:
+	$(CC) $(debug_CFLAGS) -o photomosaic.o photomosaic.cpp image_processing/image_processing.cpp utilities/utilities.cpp $(LDLIBS)
 
 crop:
 	$(CC) $(CFLAGS) -o crop_photos.o crop_photos.cpp image_processing/image_processing.cpp utilities/utilities.cpp $(LDLIBS)
