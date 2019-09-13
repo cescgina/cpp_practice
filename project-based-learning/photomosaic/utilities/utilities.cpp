@@ -119,13 +119,12 @@ std::vector<float> decode_averages(int code){
 
 std::vector<float> average_quarters(std::vector<float>& averages){
     std::vector<float> final_average(3, 0);
-    for (int k=0; k<3; k++){
-        for (int l=0; l<3; l++){
-            final_average[k] += averages[k+3*l];
-        }  
+    size_t averages_size = averages.size(), n_bins = averages_size/3;
+    for (size_t k=0; k<averages.size(); k++){
+        final_average[k % 3] += averages[k];
     }
     for (int k=0; k<3; k++){
-        final_average[k] /= 4;
+        final_average[k] /= n_bins;
     }
     return final_average;
 }
