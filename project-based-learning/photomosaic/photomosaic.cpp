@@ -1,3 +1,4 @@
+#include <map>
 #include <list>
 #include <string>
 #include <vector>
@@ -47,21 +48,19 @@ int main(int argc, char** argv){
     start = std::chrono::steady_clock::now();
     std::list<std::string> photos = get_list_photos(source_path);
     sources_map source_colors;
-    std::vector<float> rounded_averages(3, 0);
+    std::vector<float> rounded_averages(num_fractions*3, 0);
     for (std::list<std::string>::iterator i=photos.begin(); i!=photos.end(); i++){
         Magick::Image source_img;
         try{
             source_img.read(*i);
             size_t width_src = source_img.columns(), heigth_src = source_img.rows();
             std::vector<float> averages = preprocess_image(source_img, heigth_src, width_src, num_fractions)[0][0];
-            std::vector<float> avg_img = average_quarters(averages);
-            rounded_averages = round_averages(avg_img);
-            int key = encode_averages(rounded_averages);
-            if (source_colors.find(key) == source_colors.end()){
-                source_colors[key] = {std::make_pair(*i, averages)};
+            rounded_averages = round_averages(averages);
+            if (source_colors.find(rounded_averages) == source_colors.end()){
+                source_colors[rounded_averages] = {std::make_pair(*i, averages)};
             }
             else{
-                source_colors[key].push_back(std::make_pair(*i, averages));
+                source_colors[rounded_averages].push_back(std::make_pair(*i, averages));
             }
         }
         catch (Magick::ErrorCorruptImage& my_error) { 
@@ -73,7 +72,7 @@ int main(int argc, char** argv){
     time_elapsed = duration.count();
     std::cout << "Took " << time_elapsed/1000.0 << " s to process source images" << std::endl;;
     start = std::chrono::steady_clock::now();
-    auto matched_files = match_sources_files(avg_pixels, source_colors);
+    auto matched_files = match_sources_files(avg_pixels, source_colors, num_fractions);
     duration = std::chrono::duration_cast<std::chrono::milliseconds>
                         (std::chrono::steady_clock::now() - start);
     time_elapsed = duration.count();

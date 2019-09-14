@@ -7,7 +7,7 @@
 #include <experimental/filesystem>
 #include "utilities.h"
 
-std::pair<int, int> calculate_resolutions(int original_res, int rows, int cols){
+std::pair<int, int> calculate_resolutions(const int original_res, const int rows, const int cols){
     int res_x = original_res, res_y = original_res;
     while (rows % res_y != 0){
         res_y--;
@@ -18,11 +18,11 @@ std::pair<int, int> calculate_resolutions(int original_res, int rows, int cols){
     return std::pair<int, int>(res_x, res_y);
 }
 
-void create_folder(std::string& path){
+void create_folder(const std::string& path){
     std::experimental::filesystem::create_directory(path);
 }
 
-std::list<std::string> get_list_photos(std::string& path){
+std::list<std::string> get_list_photos(const std::string& path){
     std::list<std::string> list_photos;
     for (auto & file: std::experimental::filesystem::directory_iterator(path)){
         list_photos.push_back(file.path());
@@ -30,26 +30,25 @@ std::list<std::string> get_list_photos(std::string& path){
     return list_photos;
 }
 
-std::string get_filename(std::string path){
+std::string get_filename(const std::string& path){
     const size_t pos = path.find_last_of("\\/");
     return path.substr(pos+1);
 }
 
-files_array match_sources_files(pixels_array& pixels, sources_map& source_colors){
+files_array match_sources_files(const pixels_array& pixels, sources_map& source_colors, const int image_fractions){
     size_t rows = pixels.size(), cols = pixels[0].size();
     files_array image_to_file(rows, std::vector<std::string>(cols));
     vector_sources similiar_bucket;
-    std::vector<float> averages(3, 0), rounded_averages(3, 0);
+    std::vector<float> averages(3*image_fractions, 0), rounded_averages(3*image_fractions, 0);
     for (size_t i=0; i < rows; i++){
         for (size_t j=0; j < cols; j++){
-            averages = average_quarters(pixels[i][j]);
+            averages = pixels[i][j];
             rounded_averages = round_averages(averages);
-            int key = encode_averages(rounded_averages);
-            if (source_colors.find(key) == source_colors.end()){
-                similiar_bucket = find_similar_bucket(source_colors, key);
+            if (source_colors.find(rounded_averages) == source_colors.end()){
+                similiar_bucket = find_similar_bucket(source_colors, rounded_averages);
             }
             else{
-                similiar_bucket = source_colors[key];
+                similiar_bucket = source_colors[rounded_averages];
             }
             float dist = 10000.0;
             float local_dist = 0.0;
@@ -68,7 +67,7 @@ files_array match_sources_files(pixels_array& pixels, sources_map& source_colors
 }
 
 
-std::vector<float> round_averages(std::vector<float> averages){
+std::vector<float> round_averages(const std::vector<float> averages){
     std::vector<float> rounded_averages(3, 0);
     for (int i=0; i<3; i++){
         rounded_averages[i] = ((float)((int)(averages[i] * 10))) / 10;
@@ -76,37 +75,26 @@ std::vector<float> round_averages(std::vector<float> averages){
     return rounded_averages;
 }
 
-vector_sources find_similar_bucket(sources_map& source_colors, const int key){
+vector_sources find_similar_bucket(const sources_map& source_colors, const std::vector<float>& rounded_averages){
     vector_sources similar_bucket;
-    std::vector<float> decoded = decode_averages(key);
-    float r = decoded[0], g = decoded[1], b = decoded[2], dist=1000.0;
-    float local_dist = 0.0, local_r, local_g, local_b;
-    std::vector<float> local_decoded = {0.0, 0.0, 0.0};
-    for (int el=0; el<1331; el++){
-        if (source_colors.find(el) == source_colors.end()){
-            continue;
-        }
-        local_decoded = decode_averages(el);
-        local_r = r-local_decoded[0];
-        local_g = g-local_decoded[1];
-        local_b = b-local_decoded[2];
-        local_dist = std::sqrt(local_r*local_r+local_g*local_g+local_b*local_b);
+    float local_dist = 0.0, dist=100000.0;
+    for (sources_map::const_iterator el=source_colors.begin(); el != source_colors.end(); el++){
+        local_dist = calculate_distance(el->first, rounded_averages);
         if (local_dist < dist){
             dist = local_dist;
-            similar_bucket = source_colors[el];
+            similar_bucket = el->second;
         }
-        
     }
     return similar_bucket;
 }
 
-int encode_averages(std::vector<float>& rounded_avg){
+int encode_averages(const std::vector<float>& rounded_avg){
     // the encoding is based on the fact that be used buckets of resolution
     // 0.1, so we have 11 possibilities per position => 1331 possibilities
     return (int)(rounded_avg[2]*10)+11*(int)(10*rounded_avg[1])+121*(int)(10*rounded_avg[0]);
 }
 
-std::vector<float> decode_averages(int code){
+std::vector<float> decode_averages(const int code){
     auto div_result = std::div(code, 121);
     float d1 = (float)(div_result.quot/10.0);
     int k = div_result.rem;
@@ -117,7 +105,7 @@ std::vector<float> decode_averages(int code){
     return decoded;
 }
 
-std::vector<float> average_quarters(std::vector<float>& averages){
+std::vector<float> average_quarters(const std::vector<float>& averages){
     std::vector<float> final_average(3, 0);
     size_t averages_size = averages.size(), n_bins = averages_size/3;
     for (size_t k=0; k<averages.size(); k++){
@@ -129,7 +117,7 @@ std::vector<float> average_quarters(std::vector<float>& averages){
     return final_average;
 }
 
-float calculate_distance(std::vector<float>& arr1, std::vector<float>& arr2){
+float calculate_distance(const std::vector<float>& arr1, const std::vector<float>& arr2){
     float dist = 0.0, diff;
     for (size_t i=0; i<arr1.size(); i++){
         diff = arr1[1]-arr2[i];

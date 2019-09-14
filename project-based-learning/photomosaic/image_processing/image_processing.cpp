@@ -40,7 +40,7 @@ pixels_array preprocess_image(Magick::Image & image, size_t res_x, size_t res_y,
     return average;
 }
 
-void paint_image(pixels_array& pixels, Magick::Image& img, size_t res_x, size_t res_y){
+void paint_image(const pixels_array& pixels, Magick::Image& img, size_t res_x, size_t res_y){
     size_t width = img.columns(), height = img.rows();
     /* Important reminder, Magick++ considers the x the horizontal axis,
      * opposite to row-major order, so acces using (column, row) 
@@ -53,14 +53,14 @@ void paint_image(pixels_array& pixels, Magick::Image& img, size_t res_x, size_t 
     img.syncPixels();
 }
 
-void crop_photo(Magick::Image& image, std::string& output_folder, std::string& image_name){
+void crop_photo(Magick::Image& image, const std::string& output_folder, const std::string& image_name){
     size_t width = image.columns(), height = image.rows(), final_size;
     final_size = std::min(height, width);
     image.crop(Magick::Geometry(final_size, final_size));
     image.write(output_folder+"/"+image_name);
 }
 
-void construct_image_from_files(Magick::Image& image, files_array& files, size_t res_x, size_t res_y){
+void construct_image_from_files(Magick::Image& image, const files_array& files, size_t res_x, size_t res_y){
     size_t rows = files.size(), cols = files[0].size();
     size_t width = image.columns();
     image_map sources_cache;
@@ -76,7 +76,6 @@ void construct_image_from_files(Magick::Image& image, files_array& files, size_t
             else{
                 src_img = sources_cache[files[i][j]];
             }
-            src_img.resize(Magick::Geometry(res_y, res_x));
             src_img.modifyImage();
             image.modifyImage();
             const Magick::PixelPacket *src_pixel_cache = src_img.getConstPixels(0, 0, res_y, res_x);
