@@ -7,30 +7,43 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
+#include <unistd.h>
 #include "Magick++.h"
 #include "utilities.h"
 #include "image_processing.h"
 
+void print_args(){
+    std::cerr << "Usage is: ./photomosaic.o input_image resolution source_images output_image" << std::endl;
+    std::cerr << "Input parameters description:" << std::endl; 
+    std::cerr << "\tinput_image: Path to the base image for the mosaic" << std::endl;
+    std::cerr << "\tresolution: Size of the blocks to split the base image" << std::endl;
+    std::cerr << "\tsource_images: Path to the source image for the mosaic" << std::endl;
+    std::cerr << "\toutput_image: Path to store the resulting mosaic" << std::endl;
+    std::cerr << "\timage_division: Number of parts to divide the images to match (for simplicity has to be a perfect square, e.g 1, 4, 9)" << std::endl;
+}
+
 int main(int argc, char** argv){
     if (argc < 6) {
         // TODO: Finish cli description
-        std::cout << "Unsufficient number of arguments!!" << std::endl;
-        std::cout << "Usage is: ./photomosaic.o input_image resolution source_images output_image" << std::endl;
-        std::cout << "Input parameters description:" << std::endl; 
-        std::cout << "\tinput_image: Path to the base image for the mosaic" << std::endl;
-        std::cout << "\tresolution: Size of the blocks to split the base image" << std::endl;
-        std::cout << "\tsource_images: Path to the source image for the mosaic" << std::endl;
-        std::cout << "\toutput_image: Path to store the resulting mosaic" << std::endl;
-        std::cout << "\timage_division: Number of parts to divide the images to match (for simplicity has to be a perfect square, e.g 1, 4, 9)" << std::endl;
+        std::cerr << "Unsufficient number of arguments!!" << std::endl;
+        print_args();
         return -1;
     }
+    int c;
+    while ((c = getopt (argc, argv, "h")) != -1){
+        switch (c){
+          case 'h':
+            print_args();
+            return -1;
+        }
+    }
     Magick::InitializeMagick(*argv);
-    std::string input_file(argv[1]);
+    std::string input_file(argv[optind]);
     Magick::Image input_img(input_file);
-    int resolution_block = std::stoi(std::string(argv[2]));
-    std::string source_path(argv[3]);
-    std::string output_image(argv[4]);
-    int num_fractions = std::stoi(std::string(argv[5]));
+    int resolution_block = std::stoi(std::string(argv[optind+1]));
+    std::string source_path(argv[optind+2]);
+    std::string output_image(argv[optind+3]);
+    int num_fractions = std::stoi(std::string(argv[optind+4]));
     if (std::pow(std::sqrt(num_fractions), 2) != num_fractions){
         throw std::invalid_argument("image_division argument must be a perfect square!!");
     }
