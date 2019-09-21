@@ -32,8 +32,12 @@ flags = [
     '-isystem', '/usr/local/include',
     '-isystem', '/usr/local/include/eigen3',
     '-I/usr/include/ImageMagick-6',
-    '-I./image_processing',
-    '-I./utilities',
+    '-I/mnt/Windows/Users/Cesc/Linux-Windows/C++/practice/project-based-learning/photomosaic/image_processing',
+    '-I/mnt/Windows/Users/Cesc/Linux-Windows/C++/practice/project-based-learning/photomosaic/utilities',
+    '-lgtest',
+    '-lgtest-main',
+    '-lpthread',
+    '-lgmock',
     '-I/usr/lib/',
     '-I/usr/include/'
 ]

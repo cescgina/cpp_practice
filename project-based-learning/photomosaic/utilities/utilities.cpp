@@ -120,7 +120,7 @@ std::vector<float> average_quarters(const std::vector<float>& averages){
 float calculate_distance(const std::vector<float>& arr1, const std::vector<float>& arr2){
     float dist = 0.0, diff;
     for (size_t i=0; i<arr1.size(); i++){
-        diff = arr1[1]-arr2[i];
+        diff = arr1[i]-arr2[i];
         dist += diff*diff;
     }
     return std::sqrt(dist);
