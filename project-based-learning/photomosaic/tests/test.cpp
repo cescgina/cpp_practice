@@ -22,9 +22,16 @@ namespace {
     }
     TEST(ImageTests, preprocess){
         Magick::Image test_img("tests/test_img_avg.jpg");
+        float res = 0.1;
         auto result = preprocess_image(test_img, test_img.rows(), test_img.columns(), 1);
         std::vector<float> expected_array = {0.5333, 0.5255, 0.4941};
-        EXPECT_THAT(result[0][0], testing::Pointwise(FloatNearPointwise(1e-8), expected_array));
+        EXPECT_THAT(result[0][0], testing::Pointwise(FloatNearPointwise(res), expected_array));
+        result = preprocess_image(test_img, test_img.rows(), test_img.columns(), 4);
+        expected_array = {0.592, 0.573, 0.557, 0.565, 0.565, 0.541, 0.427, 0.435, 0.424, 0.502, 0.463, 0.396};
+        EXPECT_THAT(result[0][0], testing::Pointwise(FloatNearPointwise(res), expected_array));
+        result = preprocess_image(test_img, test_img.rows(), test_img.columns(), 16);
+        expected_array = {0.682, 0.671, 0.663, 0.694, 0.753, 0.749, 0.553, 0.616, 0.62, 0.604, 0.675, 0.69, 0.663, 0.643, 0.624, 0.588, 0.478, 0.455, 0.447, 0.392, 0.325, 0.757, 0.741, 0.69, 0.4, 0.443, 0.463, 0.314, 0.302, 0.278, 0.353, 0.302, 0.227, 0.522, 0.471, 0.404, 0.565, 0.6, 0.588, 0.459, 0.502, 0.502, 0.435, 0.416, 0.361, 0.69, 0.667, 0.6};
+        EXPECT_THAT(result[0][0], testing::Pointwise(FloatNearPointwise(res), expected_array));
     }
 }
 
