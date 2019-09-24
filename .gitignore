@@ -7,5 +7,8 @@
 */*/.ropeproject
 graduation/logfile.txt
 project-based-learning/photomosaic/images
-project-based-learning/photomosaic/image_processing/*.o
+project-based-learning/photomosaic/*/*.o
 project-based-learning/photomosaic/*.o
+project-based-learning/ascii-art/images
+project-based-learning/ascii-art/*/*.o
+project-based-learning/ascii-art/*.o
