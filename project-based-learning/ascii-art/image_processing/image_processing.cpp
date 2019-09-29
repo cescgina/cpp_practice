@@ -53,7 +53,7 @@ float ImageProcesser::average_brightness(const Magick::PixelPacket& pixel){
 }
 
 float ImageProcesser::luminosity(const Magick::PixelPacket& pixel){
-    return (-0.21*pixel.red + 0.72*pixel.green + 0.07*pixel.blue)/conversion_factor;
+    return (0.21*pixel.red + 0.72*pixel.green + 0.07*pixel.blue)/conversion_factor;
 }
 
 float ImageProcesser::lightness(const Magick::PixelPacket& pixel){
