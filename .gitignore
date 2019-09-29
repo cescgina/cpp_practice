@@ -13,3 +13,5 @@ project-based-learning/ascii-art/images
 project-based-learning/ascii-art/*/*.o
 project-based-learning/ascii-art/*.o
 project-based-learning/ascii-art/tests/.ropeproject
+project-based-learning/game_of_life/*.o
+project-based-learning/game_of_life/.ycm*
