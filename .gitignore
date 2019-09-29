@@ -12,3 +12,4 @@ project-based-learning/photomosaic/*.o
 project-based-learning/ascii-art/images
 project-based-learning/ascii-art/*/*.o
 project-based-learning/ascii-art/*.o
+project-based-learning/ascii-art/tests/.ropeproject
