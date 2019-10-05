@@ -1,9 +1,19 @@
 #include <random>
 #include <fstream>
 #include <iostream>
-#include <exception>
 #include "board.h"
 
+char const* FileTooSmallException::what () const noexcept{
+    return "Provided file is too small!";
+}
+
+char const* FileTooBigException::what () const noexcept{
+    return "Provided file is too big!";
+}
+
+char const* FileNotFoundException::what () const noexcept{
+    return "Provided file could not be opened!";
+}
 
 Board::Board(int width, int height){
     board_width = width;
@@ -104,23 +114,26 @@ void Board::setBoard(board_matrix& new_board){
 void Board::setBoard(const std::string& path_file){
     std::ifstream saved_board;
     saved_board.open(path_file);
+    if (!saved_board.is_open()){
+        throw FileNotFoundException();
+    }
     for (int i=0; i<board_height; i++){
         for (int j=0; j<board_width; j++){
             if (saved_board.eof()){
-                throw std::invalid_argument("Wrong dimensions specified are too big for file " + path_file +"!!");
+                throw FileTooSmallException();
             }
             saved_board >> board[i][j];
         }
     }
     int a, c=0;
-    while (!saved_board.eof()){
+    while (saved_board){
         saved_board >> a;
         c++;
     }
     // if there were more than one reads possible, then the wrong board dimensions
     // were specified (the last read was the newline)
     if(c > 1){
-        throw std::invalid_argument("Wrong dimensions specified are too small for file " + path_file +"!!");
+        throw FileTooBigException();
     }
     saved_board.close();
 }

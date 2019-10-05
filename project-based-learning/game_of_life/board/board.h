@@ -1,7 +1,24 @@
 #include <string>
 #include <vector>
+#include <exception>
 
 typedef std::vector<std::vector<int>> board_matrix;
+
+class FileNotFoundException : public std::exception {
+ public:
+    virtual char const* what () const noexcept;
+};
+
+class FileTooBigException : public std::exception {
+ public:
+    virtual char const* what () const noexcept;
+};
+
+class FileTooSmallException : public std::exception {
+ public:
+    virtual char const* what () const noexcept;
+};
+
 class Board{
     public:
         Board(int width, int height);
