@@ -1,6 +1,7 @@
-#include <vector>
 #include <random>
+#include <fstream>
 #include <iostream>
+#include <exception>
 #include "board.h"
 
 
@@ -94,4 +95,44 @@ int Board::countNeighbors(int row, int col){
         }
     }
     return 0;
+}
+
+void Board::setBoard(board_matrix& new_board){
+   board = std::move(new_board);
+}
+
+void Board::setBoard(const std::string& path_file){
+    std::ifstream saved_board;
+    saved_board.open(path_file);
+    for (int i=0; i<board_height; i++){
+        for (int j=0; j<board_width; j++){
+            if (saved_board.eof()){
+                throw std::invalid_argument("Wrong dimensions specified are too big for file " + path_file +"!!");
+            }
+            saved_board >> board[i][j];
+        }
+    }
+    int a, c=0;
+    while (!saved_board.eof()){
+        saved_board >> a;
+        c++;
+    }
+    // if there were more than one reads possible, then the wrong board dimensions
+    // were specified (the last read was the newline)
+    if(c > 1){
+        throw std::invalid_argument("Wrong dimensions specified are too small for file " + path_file +"!!");
+    }
+    saved_board.close();
+}
+
+void Board::saveBoard(const std::string& path_file){
+    std::ofstream saved_board;
+    saved_board.open(path_file);
+    for (int i=0; i<board_height; i++){
+        for (int j=0; j<board_width; j++){
+            saved_board << board[i][j] << " ";
+        }
+        saved_board << std::endl;
+    }
+    saved_board.close();
 }
