@@ -20,6 +20,7 @@ void print_args(){
     std::cerr << "\t-f: Input file with board state to start the simulation" << std::endl;
     std::cerr << "\t-n: Number of iterations to run (default is 10)" << std::endl;
     std::cerr << "\t-t: Time to wait between turns (in seconds, default is 0.5)" << std::endl;
+    std::cerr << "\t-o: File to store the final configuration" << std::endl;
 }
 
 int main(int argc, char** argv){
@@ -29,10 +30,10 @@ int main(int argc, char** argv){
         return -1;
     }
     int c, width = 0, height = 0, n_iterations=10;
-    std::string size_str = "", input_file = "";
+    std::string size_str = "", input_file = "", output_file = "";
     size_t pos = 0;
     float speed = 0.5;
-    while ((c = getopt (argc, argv, "hs:f:n:t:")) != -1){
+    while ((c = getopt (argc, argv, "hs:f:n:t:o:")) != -1){
         switch (c){
           case 'h':
             print_args();
@@ -51,14 +52,18 @@ int main(int argc, char** argv){
             break;
           case 't':
             speed = std::stof(optarg);
+            break;
+          case 'o':
+            output_file = optarg;
+            break;
         }
     }
     if (width*height == 0 && input_file == ""){
         throw std::invalid_argument("One of -s or -f options must be defined!");
     }
+    Board game_board = create_board(input_file, height, width);
     initscr();
     int old_curs = curs_set(0);
-    Board game_board = create_board(input_file, height, width);
     game_board.printBoard();
     for (int i=0; i < n_iterations; i++){
         game_board.stepBoard();
@@ -67,4 +72,7 @@ int main(int argc, char** argv){
     }
     curs_set(old_curs);
     endwin();
+    if (output_file != ""){
+        game_board.saveBoard(output_file);
+    }
 }

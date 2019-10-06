@@ -18,7 +18,6 @@ char const* FileNotFoundException::what () const noexcept{
 Board::Board(int width, int height){
     board_width = width;
     board_height = height;
-    win = newwin(board_height+2, board_width+2, 0, 0);
     board = std::vector<std::vector<int>>(height, std::vector<int>(width, 0));
     alt_board = std::vector<std::vector<int>>(height, std::vector<int>(width, 0));
     setRandomBoard();
@@ -28,7 +27,6 @@ Board::Board(int width, int height){
 Board::Board(board_matrix& new_board){
     board_height = new_board.size();
     board_width = new_board[0].size();
-    win = newwin(board_height+2, board_width+2, 0, 0);
     board = std::move(new_board);
     alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
     has_printed = false;
@@ -59,7 +57,6 @@ Board::Board(const std::string& path_file){
     }
     board_height = board.size();
     board_width = board[0].size();
-    win = newwin(board_height+2, board_width+2, 0, 0);
     alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
 }
 
@@ -68,6 +65,7 @@ void Board::printBoard(){
         wmove(win, 1, 1);
     }
     else{
+        win = newwin(board_height+2, board_width+2, 0, 0);
         wmove(win, 0, 0);
         wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
         wmove(win, 1, 1);
