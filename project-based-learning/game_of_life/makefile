@@ -14,4 +14,4 @@ test:
 	./test.o
 
 run: main
-	./game_of_life.o 10 10
+	./game_of_life.o 10 10 10
