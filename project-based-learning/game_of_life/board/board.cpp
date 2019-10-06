@@ -30,6 +30,33 @@ Board::Board(board_matrix& new_board){
     alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
 }
 
+Board::Board(const std::string& path_file){
+    board = std::vector<std::vector<int>>();
+    std::vector<int> board_row;
+    std::ifstream saved_board;
+    saved_board.open(path_file);
+    if (!saved_board.is_open()){
+        throw FileNotFoundException();
+    }
+    char temp;
+    while (saved_board.get(temp)){
+        if (temp <= '9' and temp >= '0') {
+            board_row.push_back(temp-'0');
+        }
+        else{
+            // whitespace or newline, if we have a line stored, update the
+            // board matrix, else do nothing
+            if(board_row.size() > 0){
+                board.push_back(board_row);
+                board_row = {};
+            }
+        }
+    }
+    board_height = board.size();
+    board_width = board[0].size();
+    alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
+}
+
 void Board::printBoard(){
     for (int j=0; j<board_width+2; j++){
         std::cout << "-";    

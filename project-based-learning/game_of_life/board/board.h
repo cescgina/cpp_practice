@@ -23,6 +23,7 @@ class Board{
     public:
         Board(int width, int height);
         Board(board_matrix& new_board);
+        Board(const std::string& path_file);
         void printBoard();
         void stepBoard();
         void setBoard(board_matrix& b);
