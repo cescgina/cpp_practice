@@ -57,6 +57,7 @@ int main(int argc, char** argv){
         throw std::invalid_argument("One of -s or -f options must be defined!");
     }
     initscr();
+    int old_curs = curs_set(0);
     Board game_board = create_board(input_file, height, width);
     game_board.printBoard();
     for (int i=0; i < n_iterations; i++){
@@ -64,5 +65,6 @@ int main(int argc, char** argv){
         game_board.printBoard();
         usleep(speed*1e6);
     }
+    curs_set(old_curs);
     endwin();
 }
