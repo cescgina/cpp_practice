@@ -120,6 +120,7 @@ void Board::setBoard(board_matrix& new_board){
 
 void Board::setBoard(const std::string& path_file){
     std::ifstream saved_board;
+    char temp;
     saved_board.open(path_file);
     if (!saved_board.is_open()){
         throw FileNotFoundException();
@@ -129,7 +130,8 @@ void Board::setBoard(const std::string& path_file){
             if (saved_board.eof()){
                 throw FileTooSmallException();
             }
-            saved_board >> board[i][j];
+            saved_board >> temp;
+            board[i][j] = temp-'0';
         }
     }
     int a, c=0;
@@ -150,7 +152,7 @@ void Board::saveBoard(const std::string& path_file){
     saved_board.open(path_file);
     for (int i=0; i<board_height; i++){
         for (int j=0; j<board_width; j++){
-            saved_board << board[i][j] << " ";
+            saved_board << board[i][j];
         }
         saved_board << std::endl;
     }
