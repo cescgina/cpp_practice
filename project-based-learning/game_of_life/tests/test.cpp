@@ -73,6 +73,31 @@ namespace {
             EXPECT_THAT(result[i], testing::Pointwise(IntPointwise(0), expected_array[i]));
         }
     }
+
+    TEST(BoardTests, test_count_neigbors){
+        Board game = Board("tests/iteration_8_test.txt");
+        board_matrix result = game.getNeighborsCount();
+        board_matrix expected_array = {{0,1,0,1,0,2,2,4,4,3}, {1,1,0,1,1,2,3,5,6,4}, {1,1,0,0,0,0,1,3,5,4},
+                                       {0,1,0,1,1,1,0,1,3,2}, {1,1,0,2,1,2,0,0,1,1}, {0,0,0,2,1,2,0,0,1,1},
+                                       {0,0,0,1,1,1,0,0,1,0}, {1,1,0,0,0,0,0,0,1,1}, {1,2,1,1,2,3,3,2,2,1}, 
+                                       {2,1,1,1,1,2,2,1,2,0}};
+        for (std::size_t i=0; i < expected_array.size(); i++){
+            EXPECT_THAT(result[i], testing::Pointwise(IntPointwise(0), expected_array[i]));
+        }
+    }
+
+    TEST(BoardTests, test_general_iteration){
+        Board game = Board("tests/iteration_8_test.txt");
+        game.stepBoard();
+        board_matrix result = game.getBoard();
+        board_matrix expected_array = {{0,0,0,0,0,0,1,0,0,1}, {0,0,0,0,0,0,1,0,0,0}, {0,0,0,0,0,0,0,1,0,0},
+                                       {0,0,0,0,0,0,0,0,1,1}, {0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0},
+                                       {0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,1,1,0,0,0}, 
+                                       {0,0,0,0,0,1,1,0,0,0}};
+        for (std::size_t i=0; i < expected_array.size(); i++){
+            EXPECT_THAT(result[i], testing::Pointwise(IntPointwise(0), expected_array[i]));
+        }
+    }
     TEST(BoardTests, test_file_constructor){
         Board game = Board("tests/test_board.txt");
         board_matrix result = game.getBoard();
