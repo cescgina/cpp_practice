@@ -18,19 +18,24 @@ char const* FileNotFoundException::what () const noexcept{
 Board::Board(int width, int height){
     board_width = width;
     board_height = height;
+    win = newwin(board_height+3, board_width+3, 0, 0);
     board = std::vector<std::vector<int>>(height, std::vector<int>(width, 0));
     alt_board = std::vector<std::vector<int>>(height, std::vector<int>(width, 0));
     setRandomBoard();
+    has_printed = false;
 }
 
 Board::Board(board_matrix& new_board){
     board_height = new_board.size();
     board_width = new_board[0].size();
+    win = newwin(board_height+3, board_width+3, 0, 0);
     board = std::move(new_board);
     alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
+    has_printed = false;
 }
 
 Board::Board(const std::string& path_file){
+    has_printed = false;
     board = std::vector<std::vector<int>>();
     std::vector<int> board_row;
     std::ifstream saved_board;
@@ -54,26 +59,43 @@ Board::Board(const std::string& path_file){
     }
     board_height = board.size();
     board_width = board[0].size();
+    win = newwin(board_height+3, board_width+3, 0, 0);
     alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
 }
 
 void Board::printBoard(){
-    for (int j=0; j<board_width+2; j++){
-        std::cout << "-";    
+    if (has_printed){
+        wmove(win, 1, 1);
     }
-    std::cout << std::endl;
-    for (int i=0; i<board_height; i++){
-        std::cout << "|";
-        for (int j=0; j<board_width; j++){
-           if (board[i][j] == 0) std::cout << " "; 
-           else std::cout << "#";
+    else{
+        wmove(win, 0, 0);
+        for (int j=0; j<board_width+2; j++){
+            waddch(win, '-');
         }
-        std::cout << "|" << std::endl;
-    }   
-    for (int j=0; j<board_width+2; j++){
-        std::cout << "-";    
+        waddch(win, '\n');
     }
-    std::cout << std::endl;
+    for (int i=0; i<board_height; i++){
+        if (!has_printed){
+            waddch(win, '|');
+        }
+        else{
+            wmove(win, i+1, 1);
+        }
+        for (int j=0; j<board_width; j++){
+           if (board[i][j] == 0) waddch(win, ' ');
+           else waddch(win, '#');
+        }
+        waddch(win, '|');
+        waddch(win, '\n');
+    }
+    if (!has_printed){
+        for (int j=0; j<board_width+2; j++){
+            waddch(win, '-');
+        }
+        waddch(win, '\n');
+        has_printed = true;
+    }
+    wrefresh(win);
 } 
 
 void Board::setRandomBoard(){

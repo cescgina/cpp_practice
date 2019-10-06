@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=-Wall -O2 -Wpedantic -Wextra -I board
-debug_CFLAGS=-Wall -g -Wpedantic -Wextra -I board
-TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lgtest -lgmock -lpthread -I board
+CFLAGS=-Wall -O2 -Wpedantic -Wextra -lncurses -I board
+debug_CFLAGS=-Wall -g -Wpedantic -Wextra -lncurses -I board
+TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lgtest -lgmock -lncurses -lpthread -I board
 
 main:
 	$(CC) $(CFLAGS) -o game_of_life.o game_of_life.cpp board/board.cpp
@@ -14,4 +14,4 @@ test:
 	./test.o
 
 run: main
-	./game_of_life.o 10 10 10
+	./game_of_life.o -s 10x10 -n 10

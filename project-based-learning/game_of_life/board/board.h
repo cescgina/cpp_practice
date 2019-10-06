@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <ncurses.h>
 
 typedef std::vector<std::vector<int>> board_matrix;
 
@@ -36,8 +37,10 @@ class Board{
     private:
         board_matrix board;
         board_matrix alt_board;
+        bool has_printed;
         int board_width;
         int board_height;
+        WINDOW * win;
         void setRandomBoard();
         int countNeighbors(const int row, const int col);
 };
