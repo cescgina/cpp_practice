@@ -66,11 +66,18 @@ void Board::stepBoard(){
     for (int i=0; i<board_height; i++){
         for (int j=0; j<board_width; j++){
            neighbors = countNeighbors(i, j); 
-           if (neighbors < 2 or neighbors > 3){
-               alt_board[i][j] = 1; 
+           if (board[i][j] == 1){
+               if (neighbors == 2 or neighbors == 3){
+                   alt_board[i][j] = 1;
+               }
+               else {
+                   alt_board[i][j] = 0;
+               }
            }
-           else {
-               alt_board[i][j];
+           else{
+               if (neighbors == 3){
+                   alt_board[i][j] = 1;
+               }
            }
         }
     }
