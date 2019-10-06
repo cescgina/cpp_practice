@@ -30,6 +30,9 @@ class Board{
         void setBoard(const std::string& path_file);
         void saveBoard(const std::string& path_file);
         board_matrix getBoard();
+        int getWidth();
+        int getHeight();
+        board_matrix getNeighborsCount();
     private:
         board_matrix board;
         board_matrix alt_board;

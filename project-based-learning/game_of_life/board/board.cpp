@@ -199,3 +199,20 @@ void Board::saveBoard(const std::string& path_file){
 board_matrix Board::getBoard(){
     return board;
 }
+
+int Board::getWidth(){
+   return board_width;
+}
+
+int Board::getHeight(){
+   return board_height;
+}
+board_matrix Board::getNeighborsCount(){
+    board_matrix result = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
+    for (int i=0; i<board_height; i++){
+        for (int j=0; j<board_width; j++){
+            result[i][j] = countNeighbors(i, j);
+        }
+    }
+    return result;
+}
