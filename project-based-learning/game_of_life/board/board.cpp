@@ -23,6 +23,13 @@ Board::Board(int width, int height){
     setRandomBoard();
 }
 
+Board::Board(board_matrix& new_board){
+    board_height = new_board.size();
+    board_width = new_board[0].size();
+    board = std::move(new_board);
+    alt_board = std::vector<std::vector<int>>(board_height, std::vector<int>(board_width, 0));
+}
+
 void Board::printBoard(){
     for (int j=0; j<board_width+2; j++){
         std::cout << "-";    
@@ -148,4 +155,8 @@ void Board::saveBoard(const std::string& path_file){
         saved_board << std::endl;
     }
     saved_board.close();
+}
+
+board_matrix Board::getBoard(){
+    return board;
 }

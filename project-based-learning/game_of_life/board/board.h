@@ -22,11 +22,13 @@ class FileTooSmallException : public std::exception {
 class Board{
     public:
         Board(int width, int height);
+        Board(board_matrix& new_board);
         void printBoard();
         void stepBoard();
         void setBoard(board_matrix& b);
         void setBoard(const std::string& path_file);
         void saveBoard(const std::string& path_file);
+        board_matrix getBoard();
     private:
         board_matrix board;
         board_matrix alt_board;
