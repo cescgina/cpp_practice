@@ -64,17 +64,27 @@ namespace {
         }
     }
     TEST(BoardTests, general_test){
-        Board game = Board(10, 10);
-        game.setBoard("tests/test_board.txt");
+        Board game = Board("tests/test_board.txt");
         game.stepBoard();
         board_matrix result = game.getBoard();
-        Board golden_game = Board(10, 10);
-        golden_game.setBoard("tests/out_board.txt");
+        Board golden_game = Board("tests/out_board.txt");
         board_matrix expected_array = game.getBoard();
         for (std::size_t i=0; i < expected_array.size(); i++){
             EXPECT_THAT(result[i], testing::Pointwise(IntPointwise(0), expected_array[i]));
         }
     }
+    TEST(BoardTests, test_file_constructor){
+        Board game = Board("tests/test_board.txt");
+        board_matrix result = game.getBoard();
+        board_matrix expected_array = {{1,1,0,1,0,0,0,0,0,0}, {0,0,1,0,1,1,1,1,0,0}, {0,1,0,1,0,0,1,1,1,1},
+                                       {0,0,1,1,1,1,1,1,0,0}, {0,1,0,0,0,1,1,1,1,0}, {0,0,0,1,1,1,1,1,1,0},
+                                       {0,0,1,1,1,1,1,1,1,0}, {0,0,0,1,1,1,1,1,1,0}, {1,1,1,1,1,1,1,1,1,0}, 
+                                       {1,0,0,0,0,1,0,0,0,1}};
+        for (std::size_t i=0; i < expected_array.size(); i++){
+            EXPECT_THAT(result[i], testing::Pointwise(IntPointwise(0), expected_array[i]));
+        }
+    }
+
     TEST(BoardTests, too_small_file){
         Board game = Board(14, 14);
         EXPECT_THROW(game.setBoard("tests/test_board.txt"), FileTooSmallException);
