@@ -105,6 +105,9 @@ void Board::stepBoard(){
                if (neighbors == 3){
                    alt_board[i][j] = 1;
                }
+               else{
+                   alt_board[i][j] = board[i][j];
+               }
            }
         }
     }
