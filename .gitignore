@@ -8,11 +8,8 @@
 */*/.ropeproject
 graduation/logfile.txt
 project-based-learning/photomosaic/images
-project-based-learning/photomosaic/*/*.o
-project-based-learning/photomosaic/*.o
 project-based-learning/ascii-art/images
-project-based-learning/ascii-art/*/*.o
-project-based-learning/ascii-art/*.o
-project-based-learning/ascii-art/tests/.ropeproject
-project-based-learning/game_of_life/*.o
-project-based-learning/game_of_life/.ycm*
+project-based-learning/*/*/*.o
+project-based-learning/*/tests/.ropeproject
+project-based-learning/*/*.o
+project-based-learning/*/.ycm*
