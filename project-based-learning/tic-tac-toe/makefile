@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=-Wall -O2 -Wpedantic -Wextra -lncurses -I board
-debug_CFLAGS=-Wall -g -Wpedantic -Wextra -lncurses -I board
-TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lgtest -lgmock -lncurses -lpthread -I board
+CFLAGS=-Wall -O2 -Wpedantic -Wextra -I board
+debug_CFLAGS=-Wall -g -Wpedantic -Wextra -I board
+TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lgtest -lgmock -lpthread -I board
 
 main:
 	$(CC) $(CFLAGS) -o tic-tac-toe.o tic-tac-toe.cpp board/board.cpp
