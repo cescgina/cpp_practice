@@ -40,7 +40,7 @@ int main(int argc, char** argv){
             return -1;
           case 's':
             size_str = optarg;
-            pos = size_str.find(':');
+            pos = size_str.find('x');
             height = std::stoi(size_str.substr(0, pos));
             width = std::stoi(size_str.substr(pos+1));
             break;
@@ -61,7 +61,7 @@ int main(int argc, char** argv){
     if (width*height == 0 && input_file == ""){
         throw std::invalid_argument("One of -s or -f options must be defined!");
     }
-    Board game_board = create_board(input_file, height, width);
+    Board game_board = create_board(input_file, width, height);
     initscr();
     int old_curs = curs_set(0);
     game_board.printBoard();
