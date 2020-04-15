@@ -1,0 +1,13 @@
+Database
+- cesc:
+	password: D68HkQi8ojsJU
+	salt: D6
+- c:
+	password: 0e2KLu6nK89fg
+	salt: 0e
+- af:
+	password: NyuM27JUaygnA
+	salt: Ny
+- 89:
+	password: NEXzpei0A/tSk
+	salt: NE
