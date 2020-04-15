@@ -2,3 +2,6 @@ Database
 - cesc:
 	password: Jl/spFGGxth6s
 	salt: Jl
+- test:
+	password: hjrw1Qjo0E/vs
+	salt: hj
