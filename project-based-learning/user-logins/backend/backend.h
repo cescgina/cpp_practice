@@ -2,17 +2,23 @@
 #include <string>
 #include <termios.h>
 #include <unistd.h>
+#include <sqlite3.h>
 
 class Interface{
     public:
         Interface(const std::string& path_db, bool use_db);
-        //Interface(const Interface& interface);
+        Interface(const Interface& interface);
+        ~Interface();
+        Interface operator=(const Interface& interface);
         std::pair<std::string, std::string> readUser(const std::string& username);
         void writeUser(const std::string& username, const std::string& password, const std::string& salt);
         bool userExists(const std::string& username);
+        void initTable();
+        void initDB();
     private:
         std::string db_path;
         bool db_use;
+        sqlite3* db_sql;
 };
 
 class UserManager{
@@ -39,5 +45,4 @@ class UserManager{
         void generateSalt();
         void writeUser();
         bool userExists();
-        void initDB();
 };
