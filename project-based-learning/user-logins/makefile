@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=-Wall -O2 -Wpedantic -Wextra -lcrypt -I backend
-debug_CFLAGS=-Wall -g -Wpedantic -Wextra -lcrypt -I backend
-TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lcrypt -lgtest -lgmock -lpthread -I backend
+CFLAGS=-Wall -O2 -Wpedantic -Wextra -lcrypt -lsqlite3 -I backend
+debug_CFLAGS=-Wall -g -Wpedantic -Wextra -lcrypt -lsqlite3 -I backend
+TEST_CFLAGS=-Wall -g -Wpedantic -Wextra -lcrypt -lsqlite3 -lgtest -lgmock -lpthread -I backend
 
 main:
 	$(CC) $(CFLAGS) -o access.o access.cpp backend/backend.cpp
