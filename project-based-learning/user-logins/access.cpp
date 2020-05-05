@@ -15,7 +15,7 @@ void printHelp(){
 
 int main(int argc, char** argv){
     int c, users=1;
-    std::string database="database.txt";
+    std::string database="database.db";
     bool use_db = true;
     while ((c = getopt(argc, argv, "hf:n:t")) != -1){
         switch (c){
@@ -30,6 +30,7 @@ int main(int argc, char** argv){
                 break;
             case 't':
                 use_db = false;
+                database="database.txt";
                 break;
         }
     }
